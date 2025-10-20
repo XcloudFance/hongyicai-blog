@@ -1,0 +1,11 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "hongyi-blog",
+    "compatibility_date": "2025-10-02",
+    "assets": {
+      "directory": "./dist"
+    },
+    "observability": {
+      "enabled": true
+    }
+  }

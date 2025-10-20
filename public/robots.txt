@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# 排除不想被爬取的路径
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+# Sitemap 位置
+Sitemap: https://hongyicai.cc/sitemap-0.xml

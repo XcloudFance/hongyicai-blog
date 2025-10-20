@@ -1,0 +1,226 @@
+---
+title: 'How to configure your Conda environment for Grounding DINO in 2025'
+description: ''
+tags: ['Grounding DINO', 'Conda', 'Computer Vision']
+pubDate: 'Oct 11 2025'
+heroImage: '../../assets/blogs/blog1/blog1-header.jpg'
+---
+
+### Background
+I was looking into [grounded-segment-anything](https://github.com/IDEA-Research/Grounded-Segment-Anything) and wanted to use it to segment the objects for my VLA mechanical arm image datasets.
+Therefore I was looking into the installation of MMCV / Grounding DINO installation to further train it to adapt to my special tasks since the semantical module has no idea what "mechanical arm" is.
+
+
+~~However, installing grounding dino is really a pain in the ass.~~ Although I have searched into the internet, it is still rare to see the solutions, but luckily I found one github issue that perfectly solved it.
+Plus, using grounded SAM project requires 11.3 CUDA, which also potentially causes some troubles.
+
+### CUDA 11.3 and installations of `torch, torchvision`
+I honestly have installed at least 30 different environments in last 2 months during my internship in Shanghai Jiaotong University. I have never seen such an environment that asks for CUDA 11.3.
+
+Since 11.3.0 is sometimes buggy for mamba installation if you are a China mainland user. So use 11.3.1 in the following. You can replace `mamba` with `conda` if you want to.
+
+```bash
+mamba install -c "nvidia/label/cuda-11.3.1" cuda-toolkit
+```
+
+Then install corresponding torch and torchvision by pip:
+```bash
+pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
+```
+
+Verify the installation by:
+```bash
+nvcc --version
+python -c "import torch; print(torch.__version__)"
+python -c "import torchvision; print(torchvision.__version__)"
+```
+
+If everything shows CUDA 11.3 and the version of torch and torchvision are correct, you are good to go.
+
+
+### GCC \<= 10.0 issue. Versions of your gcc should be between 8.0 to 10.0.
+This is also tricky sometimes since your GCC default version in conda might be higher than 10.0. You can check your gcc version by `gcc --version`.
+
+You can solve this problem by the following commands:
+```bash
+conda install -c conda-forge gcc_linux-64=9.5.0 gxx_linux-64=9.5.0 gfortran_linux-64=9.5.0 -y
+```
+
+If they cannot detect your gcc version, you can try to add the following environment variables:
+```bash
+export CUDA_HOME=$CONDA_PREFIX
+export PATH=$CONDA_PREFIX/bin:$PATH
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib64:$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+export CC=$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc
+export CXX=$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++
+export FC=$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gfortran
+```
+
+> **⚠️ Attention**  
+> I added whatever it possibly stonewalls my installation of Grounding DINO. So be cautious if you dont want to pollute your `.bashrc`. Use it for one-time thing.
+
+### Scalar_type issue in *value.scalar_type()*
+This triggers when you try to compile your Grounding DINO library in python. And also this is the most difficult part to be looked up on the internet. 
+To fix this, according to the github issue in GroundedSAM(or somewhere else, there are many github repos referring to this GroundingDINO project), you should edit the file in `models/GroundingDINO/csrc/MsDeformAttn/ms_deform_attn.cu`.
+I will basically give all the code here so all you need to do is replace the code with the following:
+
+```cpp
+
+		/*!
+	**************************************************************************************************
+	* Deformable DETR
+	* Copyright (c) 2020 SenseTime. All Rights Reserved.
+	* Licensed under the Apache License, Version 2.0 [see LICENSE for details]
+	**************************************************************************************************
+	* Modified from https://github.com/chengdazhi/Deformable-Convolution-V2-PyTorch/tree/pytorch_1.0.0
+	**************************************************************************************************
+	*/
+
+	#include <vector>
+	#include "ms_deform_im2col_cuda.cuh"
+
+	#include <ATen/ATen.h>
+	#include <ATen/cuda/CUDAContext.h>
+	#include <cuda.h>
+	#include <cuda_runtime.h>
+
+	namespace groundingdino {
+
+	at::Tensor ms_deform_attn_cuda_forward(
+		const at::Tensor &value, 
+		const at::Tensor &spatial_shapes,
+		const at::Tensor &level_start_index,
+		const at::Tensor &sampling_loc,
+		const at::Tensor &attn_weight,
+		const int im2col_step)
+	{
+		AT_ASSERTM(value.is_contiguous(), "value tensor has to be contiguous");
+		AT_ASSERTM(spatial_shapes.is_contiguous(), "spatial_shapes tensor has to be contiguous");
+		AT_ASSERTM(level_start_index.is_contiguous(), "level_start_index tensor has to be contiguous");
+		AT_ASSERTM(sampling_loc.is_contiguous(), "sampling_loc tensor has to be contiguous");
+		AT_ASSERTM(attn_weight.is_contiguous(), "attn_weight tensor has to be contiguous");
+
+		AT_ASSERTM(value.is_cuda(), "value must be a CUDA tensor");
+		AT_ASSERTM(spatial_shapes.type().is_cuda(), "spatial_shapes must be a CUDA tensor");
+		AT_ASSERTM(level_start_index.type().is_cuda(), "level_start_index must be a CUDA tensor");
+		AT_ASSERTM(sampling_loc.type().is_cuda(), "sampling_loc must be a CUDA tensor");
+		AT_ASSERTM(attn_weight.type().is_cuda(), "attn_weight must be a CUDA tensor");
+
+		const int batch = value.size(0);
+		const int spatial_size = value.size(1);
+		const int num_heads = value.size(2);
+		const int channels = value.size(3);
+
+		const int num_levels = spatial_shapes.size(0);
+
+		const int num_query = sampling_loc.size(1);
+		const int num_point = sampling_loc.size(4);
+
+		const int im2col_step_ = std::min(batch, im2col_step);
+
+		AT_ASSERTM(batch % im2col_step_ == 0, "batch(%d) must divide im2col_step(%d)", batch, im2col_step_);
+		
+		auto output = at::zeros({batch, num_query, num_heads, channels}, value.options());
+
+		const int batch_n = im2col_step_;
+		auto output_n = output.view({batch/im2col_step_, batch_n, num_query, num_heads, channels});
+		auto per_value_size = spatial_size * num_heads * channels;
+		auto per_sample_loc_size = num_query * num_heads * num_levels * num_point * 2;
+		auto per_attn_weight_size = num_query * num_heads * num_levels * num_point;
+		for (int n = 0; n < batch/im2col_step_; ++n)
+		{
+			auto columns = output_n.select(0, n);
+			AT_DISPATCH_FLOATING_TYPES(value.scalar_type(), "ms_deform_attn_forward_cuda", ([&] {
+				ms_deformable_im2col_cuda(at::cuda::getCurrentCUDAStream(),
+					value.data<scalar_t>() + n * im2col_step_ * per_value_size,
+					spatial_shapes.data<int64_t>(),
+					level_start_index.data<int64_t>(),
+					sampling_loc.data<scalar_t>() + n * im2col_step_ * per_sample_loc_size,
+					attn_weight.data<scalar_t>() + n * im2col_step_ * per_attn_weight_size,
+					batch_n, spatial_size, num_heads, channels, num_levels, num_query, num_point,
+					columns.data<scalar_t>());
+
+			}));
+		}
+
+		output = output.view({batch, num_query, num_heads*channels});
+
+		return output;
+	}
+
+
+	std::vector<at::Tensor> ms_deform_attn_cuda_backward(
+		const at::Tensor &value, 
+		const at::Tensor &spatial_shapes,
+		const at::Tensor &level_start_index,
+		const at::Tensor &sampling_loc,
+		const at::Tensor &attn_weight,
+		const at::Tensor &grad_output,
+		const int im2col_step)
+	{
+
+		AT_ASSERTM(value.is_contiguous(), "value tensor has to be contiguous");
+		AT_ASSERTM(spatial_shapes.is_contiguous(), "spatial_shapes tensor has to be contiguous");
+		AT_ASSERTM(level_start_index.is_contiguous(), "level_start_index tensor has to be contiguous");
+		AT_ASSERTM(sampling_loc.is_contiguous(), "sampling_loc tensor has to be contiguous");
+		AT_ASSERTM(attn_weight.is_contiguous(), "attn_weight tensor has to be contiguous");
+		AT_ASSERTM(grad_output.is_contiguous(), "grad_output tensor has to be contiguous");
+
+		AT_ASSERTM(value.is_cuda(), "value must be a CUDA tensor");
+		AT_ASSERTM(spatial_shapes.type().is_cuda(), "spatial_shapes must be a CUDA tensor");
+		AT_ASSERTM(level_start_index.type().is_cuda(), "level_start_index must be a CUDA tensor");
+		AT_ASSERTM(sampling_loc.type().is_cuda(), "sampling_loc must be a CUDA tensor");
+		AT_ASSERTM(attn_weight.type().is_cuda(), "attn_weight must be a CUDA tensor");
+		AT_ASSERTM(grad_output.type().is_cuda(), "grad_output must be a CUDA tensor");
+
+		const int batch = value.size(0);
+		const int spatial_size = value.size(1);
+		const int num_heads = value.size(2);
+		const int channels = value.size(3);
+
+		const int num_levels = spatial_shapes.size(0);
+
+		const int num_query = sampling_loc.size(1);
+		const int num_point = sampling_loc.size(4);
+
+		const int im2col_step_ = std::min(batch, im2col_step);
+
+		AT_ASSERTM(batch % im2col_step_ == 0, "batch(%d) must divide im2col_step(%d)", batch, im2col_step_);
+
+		auto grad_value = at::zeros_like(value);
+		auto grad_sampling_loc = at::zeros_like(sampling_loc);
+		auto grad_attn_weight = at::zeros_like(attn_weight);
+
+		const int batch_n = im2col_step_;
+		auto per_value_size = spatial_size * num_heads * channels;
+		auto per_sample_loc_size = num_query * num_heads * num_levels * num_point * 2;
+		auto per_attn_weight_size = num_query * num_heads * num_levels * num_point;
+		auto grad_output_n = grad_output.view({batch/im2col_step_, batch_n, num_query, num_heads, channels});
+		
+		for (int n = 0; n < batch/im2col_step_; ++n)
+		{
+			auto grad_output_g = grad_output_n.select(0, n);
+			AT_DISPATCH_FLOATING_TYPES(value.scalar_type(), "ms_deform_attn_backward_cuda", ([&] {
+				ms_deformable_col2im_cuda(at::cuda::getCurrentCUDAStream(),
+										grad_output_g.data<scalar_t>(),
+										value.data<scalar_t>() + n * im2col_step_ * per_value_size,
+										spatial_shapes.data<int64_t>(),
+										level_start_index.data<int64_t>(),
+										sampling_loc.data<scalar_t>() + n * im2col_step_ * per_sample_loc_size,
+										attn_weight.data<scalar_t>() + n * im2col_step_ * per_attn_weight_size,
+										batch_n, spatial_size, num_heads, channels, num_levels, num_query, num_point,
+										grad_value.data<scalar_t>() +  n * im2col_step_ * per_value_size,
+										grad_sampling_loc.data<scalar_t>() + n * im2col_step_ * per_sample_loc_size,
+										grad_attn_weight.data<scalar_t>() + n * im2col_step_ * per_attn_weight_size);
+
+			}));
+		}
+
+		return {
+			grad_value, grad_sampling_loc, grad_attn_weight
+		};
+	}
+
+	} // namespace groundingdino
+
+```

@@ -1,12 +1,12 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
-
-type Props = CollectionEntry<'blog'>['data'];
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+import TableOfContents from "../components/TableOfContents";
+type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
@@ -20,22 +20,33 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				max-width: 100%;
 				margin: 0;
 			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
+		.hero-image {
+			width: 80%;
+`			max-width: 1000px;
+			margin: 0 auto;
+			padding: 0 1em;
+		}
+		.hero-image img {
+			display: block;
+			margin: 0 auto;
+			border-radius: 12px;
+			box-shadow: var(--box-shadow);
+			width: 100%;
+			max-width: 800px;
+			height: auto;
+		}
+		.prose {
+			width: 100%;
+			max-width: none;
+			margin: 0;
+			padding: 1em;
+			color: rgb(var(--gray-dark));
+		}
+		
+		article {
+			flex: 1;
+			min-width: 0;
+		}
 			.title {
 				margin-bottom: 1em;
 				padding: 1em 0;
@@ -52,35 +63,194 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
-		</style>
+
+			@media (max-width: 1024px) {
+				.main-container {
+				
+					padding: 0 1rem;
+				}
+				.sidebar {
+					display: none;
+				}
+			}
+
+			.sidebar {
+				position: sticky;
+				top: 2rem;
+				width: 280px;
+				flex-shrink: 0;
+				height: fit-content;
+			}
+			@media (max-width: 768px) {
+				.main-container {
+					padding: 0 0.5rem;
+				}
+			}
+			
+		.main-container {
+			display: flex;
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 0 0rem;
+			gap: 2rem;
+			align-items: flex-start;
+		}
+
+		:global(.prose pre) {
+			position: relative !important;
+			padding: 1.5em !important;
+			border-radius: 8px !important;
+			font-size: 0.85rem !important;
+		}
+
+		:global(.prose pre code) {
+			font-size: 0.85rem !important;
+			line-height: 1.6 !important;
+		}
+
+		:global(.copy-button) {
+			position: absolute !important;
+			top: 0.5rem !important;
+			right: 0.5rem !important;
+			padding: 0.5rem 0.75rem !important;
+			background-color: rgba(255, 255, 255, 0.9) !important;
+			border: 1px solid rgb(var(--gray-light)) !important;
+			border-radius: 0.375rem !important;
+			font-size: 0.75rem !important;
+			cursor: pointer !important;
+			transition: all 0.2s ease !important;
+			color: rgb(var(--black)) !important;
+			font-weight: 500 !important;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+			z-index: 10 !important;
+		}
+
+		:global(.copy-button:hover) {
+			background-color: rgb(119, 126, 202) !important;
+			color: white !important;
+			border-color: rgb(119, 126, 202) !important;
+		}
+
+		:global(.copy-button.copied) {
+			background-color: #10b981 !important;
+			color: white !important;
+			border-color: #10b981 !important;
+		}
+		
+		:global(blockquote) {
+			font-size: 1.0em !important;
+			
+		}
+
+		:global(h1){
+			font-size: 2.0em !important;
+		}
+		:global(h2) {
+			font-size: 1.5em !important;
+		}
+
+		:global(h3){
+			font-size: 1.2em !important;
+		}
+	
+		
+	</style>
 	</head>
 
 	<body>
 		<Header />
 		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
+			<div class="main-container">
+				<article>
+					<div class="hero-image">
+						{
+							heroImage && (
+								<Image
+									width={1020}
+									height={510}
+									src={heroImage}
+									alt=""
+								/>
+							)
+						}
 					</div>
-					<slot />
-				</div>
-			</article>
+					<div class="prose">
+						<div class="title">
+							<div class="date">
+								<FormattedDate date={pubDate} />
+								{
+									updatedDate && (
+										<div class="last-updated-on">
+											Last updated on{" "}
+											<FormattedDate date={updatedDate} />
+										</div>
+									)
+								}
+							</div>
+							<h1>{title}</h1>
+						
+							<hr />
+						</div>
+						<slot />
+					</div>
+					
+				</article>
+				<aside class="sidebar">
+					<TableOfContents client:load />
+				</aside>
+			</div>
+			
+
+
 		</main>
 		<Footer />
+
+		<script>
+	
+			function addCopyButtons() {
+				const codeBlocks = document.querySelectorAll('pre');
+				
+				codeBlocks.forEach((pre) => {
+	
+					if (pre.querySelector('.copy-button')) return;
+					
+					const button = document.createElement('button');
+					button.className = 'copy-button';
+					button.textContent = 'Copy';
+					
+					button.addEventListener('click', async () => {
+						const code = pre.querySelector('code');
+						const text = code?.textContent || '';
+						
+						try {
+							await navigator.clipboard.writeText(text);
+							button.textContent = 'Copied!';
+							button.classList.add('copied');
+							
+							setTimeout(() => {
+								button.textContent = 'Copy';
+								button.classList.remove('copied');
+							}, 2000);
+						} catch (err) {
+							console.error('Failed to copy:', err);
+							button.textContent = 'Failed';
+							setTimeout(() => {
+								button.textContent = 'Copy';
+							}, 2000);
+						}
+					});
+					
+					pre.appendChild(button);
+				});
+			}
+			
+	
+			addCopyButtons();
+			
+			// 监听页面过渡事件（为了支持 View Transitions）
+			document.addEventListener('astro:page-load', () => {
+				addCopyButtons();
+			});
+		</script>
 	</body>
 </html>

@@ -1,48 +1,214 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { Image } from "astro:assets";
+import headShot from "../assets/sagiri.jpg";
+import PublicationCard from "../components/Publication.astro";
+import publications from "../data/publications.json";
+import { Icon } from 'astro-icon/components';
+const sortedPubs = publications.sort((a, b) => {
+	return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
+});
+
+
+
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	
+		<style>
+			#head-shot,
+			#container-headshot {
+				width: 700px;
+				height: 200px;
+			}
+
+			#head-shot {
+				max-width: 200px;
+				border-radius: 50%;
+				object-fit: cover;
+				box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+				transition: all 0.7s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+			}
+
+			#container-headshot {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 1rem;
+			}
+			#head-shot:hover {
+				transform: scale(1.15) rotate(360deg);
+			}
+
+			#container-intro {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				gap: 5rem;
+			}
+
+			#container-intro-research-list {
+				margin-top: 80px;
+			}
+
+			.social-links{
+				display: flex;
+				gap: 1.1rem;
+			}
+			p{
+				line-height: 1.55;
+				margin: 11px 0;
+			}
+			ul {
+				list-style: none;
+				padding-left: 0;
+			}
+
+		#teaser {
+			width: 70%;
+
+			margin: auto;
+			padding: 3em 1em;
+		}
+		
+		/* 手机尺寸下隐藏头像容器 */
+		@media (max-width: 720px) {
+			#container-headshot {
+				display: none;
+			}
+			
+			#container-intro {
+				flex-direction: column;
+				gap: 2rem;
+			}
+			
+		}
+		
+		/* Float up 动画 */
+		@keyframes floatUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		
+		#teaser {
+			animation: floatUp 0.8s ease-out forwards;
+		}
+		
+		/* 为子元素添加延迟动画 */
+		#container-intro {
+			animation: floatUp 0.8s ease-out 0.2s forwards;
+			opacity: 0;
+		}
+		
+		#container-intro-research-list {
+			animation: floatUp 0.8s ease-out 0.4s forwards;
+			opacity: 0;
+		}
+		
+	</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<div id="teaser">
+				<div id="container-intro">
+					<div id="container-headshot">
+						<Image src={headShot} id="head-shot" alt="Hongyi Cai" />
+
+						
+						<div class="social-links">
+							<a
+								href="https://github.com/xcloudfance"
+								target="_blank"
+							>
+								
+								<Icon name="mdi:github" size={32} />
+							</a>
+							<a
+								href="https://scholar.google.com/citations?user=nQHDIlUAAAAJ"
+								target="_blank"
+							>
+								<Icon name="mdi:google" size={32} />
+							</a>
+							<a
+								href="https://linkedin.com/in/hongyicai"
+								target="_blank"
+							>
+								<Icon name="mdi:linkedin" size={32} />
+							
+							</a>
+						</div>
+					</div>
+
+					<div id="container-intro-text">
+						<h2>Hongyi Cai | 蔡弘毅</h2>
+
+						<p>
+							Ni hao! I am a software engineer & team lead in
+							infinity datatech, working with Java Springboot,
+							PostgreSQL, Clickhouse, Kafka and etc. Other than
+							working life, I am also into Linux, Golang,
+							Distributed Systems, Databases and Operating
+							Systems. Always be frenzy about new tech things.
+						</p>
+						<p>
+							As of academia, interested in AI research, e.g. <b
+								>Video Understanding & Generating, Embodied AI &
+								VLA, Multimodal, Data-centric AI, Natural
+								Language Processing. I am currently looking for a PhD position or a funded RA position, available starting from 2026 September, physical internship preferred. </b
+							> Kindly contact me if you have any opportunities: <a href="mailto:xcloudfance@gmail.com">hongyicai's gmail</a>.
+						</p>
+						<p>
+							Nothing is more interesting than seeing how things
+							work. Digging into the details and prying off the
+							diminutive innuendo that nobody cares would one day
+							be useful in an unexpected way.
+						</p>
+
+						<p>
+							I am also a freelance teacher in A-level Computer
+							Science during my spare time and English during my summer holiday of 12th
+							grade. I am going to finish my undergraduate degree of Computer Science at Universiti Malaya in 2027 Feb.
+						</p>
+					</div>
+				</div>
+
+				<div id="container-intro-research-list">
+					<h4>Preprint / Publications</h4>
+					<ul>
+						{
+							sortedPubs.map((pub) => (
+								<li>
+									<PublicationCard
+										title={pub.title}
+										abstract={pub.abstract}
+										pubDate={pub.pubDate}
+										heroImage={pub.heroImage}
+										conference={pub.conference}
+										href={pub.href}
+										authors={pub.authors}
+									/>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
 		</main>
 		<Footer />
 	</body>

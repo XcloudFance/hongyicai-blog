@@ -5,14 +5,23 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "deploy": "astro deploy && wrangler deploy",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.6",
+    "@astrojs/preact": "^4.1.1",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.6.0",
+    "@iconify-json/mdi": "^1.2.3",
     "astro": "^5.14.1",
-    "sharp": "^0.34.3"
+    "astro-icon": "^1.1.5",
+    "clickhouse": "^2.6.0",
+    "lighthouse": "^13.0.0",
+    "lucide-react": "^0.544.0",
+    "preact": "^10.27.2",
+    "sharp": "^0.34.3",
+    "wrangler": "^4.40.3"
   }
 }

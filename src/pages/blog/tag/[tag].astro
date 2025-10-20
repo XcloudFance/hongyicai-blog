@@ -1,0 +1,137 @@
+---
+// src/pages/blog/tag/[tag].astro
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import Header from '../../../components/Header.astro';
+import {SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
+import '../../../styles/blog.css';
+import TagList from '../../../components/TagList';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const allTags = [...new Set(posts.flatMap(post => post.data.tags || []))];
+  
+  return allTags.map(tag => ({
+    params: { tag },
+    props: { 
+      posts: posts
+        .filter(post => post.data.tags?.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    }
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+
+
+const allPosts = await getCollection('blog');
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))];
+const tagCounts = allTags.map(t => ({
+  name: t,
+  count: allPosts.filter(post => post.data.tags?.includes(t)).length
+})).sort((a, b) => b.count - a.count);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.tag-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 2rem;
+				flex-wrap: wrap;
+				gap: 1rem;
+			}
+
+			.back-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.65rem 1.25rem;
+				background-color: white;
+				color: rgb(var(--black));
+				text-decoration: none;
+				border-radius: 0.5rem;
+				font-size: 0.9em;
+				font-weight: 500;
+				transition: all 0.2s ease;
+				border: 2px solid rgb(var(--gray-light));
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+			}
+
+			.back-link:hover {
+				border-color: rgb(119, 126, 202);
+				color: rgb(119, 126, 202);
+				box-shadow: 0 2px 8px rgba(119, 126, 202, 0.15);
+				transform: translateX(-3px);
+			}
+
+			.back-link:active {
+				transform: translateX(-1px);
+			}
+
+			@media (max-width: 720px) {
+				.tag-header {
+					flex-direction: column;
+					align-items: flex-start;
+				}
+				
+				.back-link {
+					width: 100%;
+					justify-content: center;
+				}
+				
+				.back-link:hover {
+					transform: translateX(0);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="main-container">
+				<section>
+                    <div class="tag-header">
+						<h2>Label: {tag}</h2>
+						<a href="/blog" class="back-link">← Back to all posts</a>
+					</div>
+					<ul>
+						{
+							posts.map((post) => (
+								<li>
+									<div class="post-card">
+										<a href={`/blog/${post.id}/`}>
+											{post.data.heroImage && (
+												<Image width={720} height={360} src={post.data.heroImage} alt="" />
+											)}
+											<div class="tags">
+												{post.data.tags.map((tag) => (
+												 <span class="tag">{tag}</span>
+												))}
+											</div>
+											<h5 class="title">{post.data.title}</h5>
+											<p class="date">
+												<FormattedDate date={post.data.pubDate} />
+											</p>
+										</a>
+									</div>
+								</li>
+							))
+						}
+					</ul>
+				</section>
+				<aside class="sidebar">
+                    <TagList tagCounts={tagCounts} activeTag={tag} />
+				</aside>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
