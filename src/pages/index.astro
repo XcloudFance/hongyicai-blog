@@ -7,20 +7,21 @@ import { Image } from "astro:assets";
 import headShot from "../assets/sagiri.jpg";
 import PublicationCard from "../components/Publication.astro";
 import publications from "../data/publications.json";
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 const sortedPubs = publications.sort((a, b) => {
 	return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
 });
-
-
-
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	
+		<BaseHead
+			title={SITE_TITLE}
+			description={SITE_DESCRIPTION}
+			image={headShot}
+		/>
+
 		<style>
 			#head-shot,
 			#container-headshot {
@@ -60,11 +61,11 @@ const sortedPubs = publications.sort((a, b) => {
 				margin-top: 80px;
 			}
 
-			.social-links{
+			.social-links {
 				display: flex;
 				gap: 1.1rem;
 			}
-			p{
+			p {
 				line-height: 1.55;
 				margin: 11px 0;
 			}
@@ -73,54 +74,52 @@ const sortedPubs = publications.sort((a, b) => {
 				padding-left: 0;
 			}
 
-		#teaser {
-			width: 70%;
+			#teaser {
+				width: 70%;
 
-			margin: auto;
-			padding: 3em 1em;
-		}
-		
-		/* 手机尺寸下隐藏头像容器 */
-		@media (max-width: 720px) {
-			#container-headshot {
-				display: none;
+				margin: auto;
+				padding: 3em 1em;
 			}
-			
+
+			/* 手机尺寸下隐藏头像容器 */
+			@media (max-width: 720px) {
+				#container-headshot {
+					display: none;
+				}
+
+				#container-intro {
+					flex-direction: column;
+					gap: 2rem;
+				}
+			}
+
+			/* Float up 动画 */
+			@keyframes floatUp {
+				from {
+					opacity: 0;
+					transform: translateY(30px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			#teaser {
+				animation: floatUp 0.8s ease-out forwards;
+			}
+
+			/* 为子元素添加延迟动画 */
 			#container-intro {
-				flex-direction: column;
-				gap: 2rem;
-			}
-			
-		}
-		
-		/* Float up 动画 */
-		@keyframes floatUp {
-			from {
+				animation: floatUp 0.8s ease-out 0.2s forwards;
 				opacity: 0;
-				transform: translateY(30px);
 			}
-			to {
-				opacity: 1;
-				transform: translateY(0);
+
+			#container-intro-research-list {
+				animation: floatUp 0.8s ease-out 0.4s forwards;
+				opacity: 0;
 			}
-		}
-		
-		#teaser {
-			animation: floatUp 0.8s ease-out forwards;
-		}
-		
-		/* 为子元素添加延迟动画 */
-		#container-intro {
-			animation: floatUp 0.8s ease-out 0.2s forwards;
-			opacity: 0;
-		}
-		
-		#container-intro-research-list {
-			animation: floatUp 0.8s ease-out 0.4s forwards;
-			opacity: 0;
-		}
-		
-	</style>
+		</style>
 	</head>
 	<body>
 		<Header />
@@ -130,13 +129,11 @@ const sortedPubs = publications.sort((a, b) => {
 					<div id="container-headshot">
 						<Image src={headShot} id="head-shot" alt="Hongyi Cai" />
 
-						
 						<div class="social-links">
 							<a
 								href="https://github.com/xcloudfance"
 								target="_blank"
 							>
-								
 								<Icon name="mdi:github" size={32} />
 							</a>
 							<a
@@ -150,7 +147,6 @@ const sortedPubs = publications.sort((a, b) => {
 								target="_blank"
 							>
 								<Icon name="mdi:linkedin" size={32} />
-							
 							</a>
 						</div>
 					</div>
@@ -160,18 +156,25 @@ const sortedPubs = publications.sort((a, b) => {
 
 						<p>
 							Ni hao! I am a software engineer & team lead in
-							infinity datatech, working with Java Springboot, Keycloak,
-							PostgreSQL, Clickhouse, Kafka, Kubernetes Bare Metal and etc. Other than
-							working life, I am also into Linux, Golang,
-							Distributed Systems, Databases and Operating
-							Systems. Always be frenzy about new tech things.
+							infinity datatech, working with Java Springboot,
+							Keycloak, PostgreSQL, Clickhouse, Kafka, Kubernetes
+							Bare Metal and etc. Other than working life, I am
+							also into Linux, Golang, Distributed Systems,
+							Databases and Operating Systems. Always be frenzy
+							about new tech things.
 						</p>
 						<p>
 							As of academia, interested in AI research, e.g. <b
 								>Video Understanding & Generating, Embodied AI &
 								VLA, Multimodal, Data-centric AI, Natural
-								Language Processing. I am currently looking for a PhD position or a funded RA position, available starting from 2026 September, physical internship preferred. </b
-							> Kindly contact me if you have any opportunities: <a href="mailto:xcloudfance@gmail.com">hongyicai's gmail</a>.
+								Language Processing. I am currently looking for
+								a PhD position or a funded RA position,
+								available starting from 2026 September, physical
+								internship preferred.
+							</b> Kindly contact me if you have any opportunities:
+							<a href="mailto:xcloudfance@gmail.com"
+								>hongyicai's gmail</a
+							>.
 						</p>
 						<p>
 							Nothing is more interesting than seeing how things
@@ -182,10 +185,14 @@ const sortedPubs = publications.sort((a, b) => {
 
 						<p>
 							I am also a freelance teacher in A-level Computer
-							Science during my spare time and English during my summer holiday of 12th
-							grade. I am going to finish my undergraduate degree of Computer Science at Universiti Malaya in 2027 Feb.
+							Science during my spare time and English during my
+							summer holiday of 12th grade. I am going to finish
+							my undergraduate degree of Computer Science at
+							Universiti Malaya in 2027 Feb.
 						</p>
-						<a href="https://github.com/xcloudfance/hongyicai-blog">Blog Template</a>
+						<a href="https://github.com/xcloudfance/hongyicai-blog"
+							>Blog Template</a
+						>
 					</div>
 				</div>
 

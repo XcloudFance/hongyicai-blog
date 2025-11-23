@@ -3,7 +3,7 @@ title: 'From K-NN, HNSW to Product Quantization: Approximate Nearest Neighbor Se
 description: ''
 tags: ['Approximate Nearest Neighbor Search', 'Product Quantization', 'Computer Vision']
 pubDate: 'Oct 12 2025'
-heroImage: '../../assets/blog-placeholder-5.jpg'
+heroImage: '../../assets/blogs/ANN/cover.jpg'
 ---
 
 import BlogImage from '../../components/BlogImage.astro';
@@ -16,7 +16,7 @@ Elastic Search, Faiss and etc. all adopted their own **approximate nearest neigh
 During my near research for my final-year project (FYP), which is to develop a production-level distributed search engine,
 I have looked into **vector search**, **inverted index** and **Learning-to-Rank**, for my main and the most used features -- searching . 
 
-My FYP intrigues me into exploring acceleration of vector search. Based on my previous knowledge, in game / navigation, in order to speed up the search process,  a common solution is to use K-D Trees, which recursively partition orthognal axies to construct a tree structure so that it only takes time complexity O(log n) to search.
+My FYP intrigues me into exploring acceleration of vector search. Based on my previous knowledge, in game / navigation, in order to speed up the search process,  a common solution is to use K-D Trees, which recursively partition orthognal axies to construct a tree structure so that it only takes time complexity O(log n) to search, referring to Fig. 1.
 However, even though partitioning sounds intuitive, it does not work well when the dimensions grows explosively into `256` or `1024`, which will bring a long time to partition into all `k` dimensions.
 
 This article is going to mostly cover vector search parts so we do not discuss about inverted index and Learning-to-Rank.
