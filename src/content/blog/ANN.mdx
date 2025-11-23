@@ -6,16 +6,31 @@ pubDate: 'Oct 12 2025'
 heroImage: '../../assets/blog-placeholder-5.jpg'
 ---
 
+import BlogImage from '../../components/BlogImage.astro';
+import kdTreeImg from '../../assets/blogs/ANN/kd.png';
+import knnImg from '../../assets/blogs/ANN/knn.png';
+
 ## Why do you need ANN? | Background
 
-Elastic Search, Faiss and etc. all adopted their own approximate nearest neighbor search algorithms.
+Elastic Search, Faiss and etc. all adopted their own **approximate nearest neighbor** search algorithms to deal with vector search among the huge scale of corpus.
 During my near research for my final-year project (FYP), which is to develop a production-level distributed search engine,
 I have looked into **vector search**, **inverted index** and **Learning-to-Rank**, for my main and the most used features -- searching . 
 
+My FYP intrigues me into exploring acceleration of vector search. Based on my previous knowledge, in game / navigation, in order to speed up the search process,  a common solution is to use K-D Trees, which recursively partition orthognal axies to construct a tree structure so that it only takes time complexity O(log n) to search.
+However, even though partitioning sounds intuitive, it does not work well when the dimensions grows explosively into `256` or `1024`, which will bring a long time to partition into all `k` dimensions.
+
 This article is going to mostly cover vector search parts so we do not discuss about inverted index and Learning-to-Rank.
+
+<BlogImage src={kdTreeImg.src} alt="K-D Tree" caption="K-D Tree" />
 
 ## Starting from K-NN
 It is not a secret that K-Nearest Neighbors (K-NN) is the simplest and most naive nearest neighbor search algorithm.
+
+The principle of KNN algorithm is very simple: try to find the nearest neighbor of the query vector in the dataset. Usually these neighbors are belonged to a cluster so that it is able to put the query vector into specific class.
+
+<BlogImage src={knnImg.src} alt="K-NN" caption="K-NN" />
+
+
 However, when the vector dimension explodes or the number of vectors vastly increases,
 K-NN algorithm reveals weakness in terms of its time complexity O(n^2) to inevitably calculate the euclidean distance for each and every vector in the dataset.
 

@@ -1,0 +1,48 @@
+---
+import { getNextFigureNumber } from "../utils/figureCounter";
+
+interface Props {
+    src: string;
+    alt: string;
+    caption?: string;
+    width?: string;
+    autoNumber?: boolean;
+    figureNumber?: number;
+    prefix?: string;
+}
+
+const {
+    src,
+    alt,
+    caption,
+    width = "80%",
+    autoNumber = true,
+    figureNumber,
+    prefix = "Figure",
+} = Astro.props;
+
+// Use the current page URL as a unique identifier
+const pageId = Astro.url.pathname;
+
+// Use provided figure number, or auto-generate if autoNumber is true
+const displayNumber =
+    figureNumber ?? (autoNumber ? getNextFigureNumber(pageId) : null);
+const fullCaption = displayNumber
+    ? `${prefix} ${displayNumber}: ${caption}`
+    : caption;
+---
+
+<figure style={`max-width: ${width}; margin: 2rem auto; text-align: center;`}>
+    <img
+        src={src}
+        alt={alt}
+        style="width: 100%; height: auto; border-radius: 8px;"
+    />
+    {
+        fullCaption && (
+            <figcaption style="margin-top: 0.5rem; font-style: italic; color: #666; font-size: 1.1rem;">
+                {fullCaption}
+            </figcaption>
+        )
+    }
+</figure>

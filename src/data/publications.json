@@ -1,47 +1,47 @@
 [
-    {
-      "title": "Low-Confidence Gold: Refining Low-Confidence Samples for Efficient Instruction Tuning",
-      "abstract": "The effectiveness of instruction fine-tuning for Large Language Models is fundamentally constrained by the quality and efficiency of training datasets. This work introduces LowConfidence Gold (LCG), a novel filtering framework that employs centroid-based clustering and confidence-guided selection for identifying valuable instruction pairs. Through a semi-supervised approach using a lightweight classifier trained on representative samples, LCG curates high-quality subsets while preserving data diversity. Experimental evaluation demonstrates that models fine-tuned on LCG-filtered subsets of 6K samples achieve superior performance compared to existing methods, with substantial improvements on MT-bench and consistent gains across comprehensive evaluation metrics. The framework's efficacy while maintaining model performance establishes a promising direction for efficient instruction tuning.",
-      "pubDate": "2025-02",
-      "authors":"Hongyi Cai, Jie Li, Mohammad Mahdinur Rahman, Wenzhen Dong",
-      "heroImage": "/lcg.png",
-      "conference": "EMNLP 2025 Findings",
-      "href": "https://arxiv.org/abs/2502.18978"
-    },
-    {
-        "title": "AutoDebias: Automated Framework for Debiasing Text-to-Image Models",
-        "authors": "Hongyi Cai, Mohammad Mahdinur Rahman, Mingkang Dong, Jie Li, Muxin Pu, Zhili Fang, Yinan Peng, Hanjun Luo, Yang Liu",
-        "abstract": "Text-to-Image (T2I) models generate high-quality images from text prompts but often exhibit unintended social biases, such as gender or racial stereotypes, even when these attributes are not mentioned. Existing debiasing methods work well for simple or well-known cases but struggle with subtle or overlapping biases. We propose AutoDebias, a framework that automatically identifies and mitigates harmful biases in T2I models without prior knowledge of specific bias types. Specifically, AutoDebias leverages vision-language models to detect biased visual patterns and constructs fairness guides by generating inclusive alternative prompts that reflect balanced representations. These guides drive a CLIP-guided training process that promotes fairer outputs while preserving the original model's image quality and diversity. Unlike existing methods, AutoDebias effectively addresses both subtle stereotypes and multiple interacting biases. We evaluate the framework on a benchmark covering over 25 bias scenarios, including challenging cases where multiple biases occur simultaneously. AutoDebias detects harmful patterns with 91.6% accuracy and reduces biased outputs from 90% to negligible levels, while preserving the visual fidelity of the original model.",
-        "pubDate": "2025-08",
-        "heroImage": "/autodebias.png",
-        "conference": "arXiv Preprint",
-        "href": "https://arxiv.org/abs/2508.00445"
-      },
-      {
-        "title": "MergeIT: From Selection to Merging for Efficient Instruction Tuning",
-        "abstract": "Instruction tuning is crucial for optimizing Large Language Models (LLMs), yet mainstream data selection methods heavily rely on LLMs as instruction quality scorers, leading to high computational costs and reduced data diversity. To address these limitations, we propose MergeIT, a novel LLM-based Merging strategy for better Instruction Tuning that shifts the focus from selection to synthesis. MergeIT operates in two stages: first, topic-aware filtering clusters and refines the dataset, preserving diversity while eliminating redundancy without relying on LLM-based scoring. Second, LLM-based merging synthesizes semantically similar instructions into more informative and compact training data, enhancing data richness while further reducing dataset size. Experimental results demonstrate that MergeIT enables efficient, diverse, and scalable instruction selection and synthesis, establishing LLM-based merging as a promising alternative to conventional scoring-based selection methods for instruction tuning.",
-        "pubDate": "2025-02",
-        "authors": "Hongyi Cai, Yuqian Fu, Hongming Fu, Bo Zhao",
-        "heroImage": "/mergeit.png",
-        "conference": "arXiv Preprint",
-        "href": "https://arxiv.org/abs/2503.00034"
-      },
-      {
-        "title": "AgileIR: Memory-Efficient Group Shifted Windows Attention for Lightweight Image Restoration",
-        "abstract": "Image Transformers show a magnificent success in Image Restoration tasks. Nevertheless, most of transformer-based models are strictly bounded by exorbitant memory occupancy. Our goal is to reduce the memory consumption of Swin Transformer and at the same time speed up the model during training process. Thus, we introduce AgileIR, group shifted attention mechanism along with window attention, which sparsely simplifies the model in architecture. We propose Group Shifted Window Attention (GSWA) to decompose Shift Window Multi-head Self Attention (SW-MSA) and Window Multi-head Self Attention (W-MSA) into groups across their attention heads, contributing to shrinking memory usage in back propagation. In addition to that, we keep shifted window masking and its shifted learnable biases during training, in order to induce the model interacting across windows within the channel. We also re-allocate projection parameters to accelerate attention matrix calculation, which we found a negligible decrease in performance. As a result of experiment, compared with our baseline SwinIR and other efficient quantization models, AgileIR keeps the performance still at 32.20 dB on Set5 evaluation dataset, exceeding other methods with tailor-made efficient methods and saves over 50% memory while a large batch size is employed.",
-        "pubDate": "2024-09",
-        "authors": "Hongyi Cai, Mohammad Mahdinur Rahman, Jingyu Wu, Wenzhen Dong, Jie Li",
-        "heroImage": "/agileir.png",
-        "conference": "ICANN 2025",
-        "href": "https://arxiv.org/abs/2409.06206"
-      },
-      {
-        "title": "CFPFormer: Feature-pyramid like Transformer Decoder for Segmentation and Detection",
-        "abstract": "Feature pyramids have been widely adopted in convolutional neural networks and transformers for tasks in medical image segmentation. However, existing models generally focus on the Encoder-side Transformer for feature extraction. We further explore the potential in improving the feature decoder with a well-designed architecture. We propose Cross Feature Pyramid Transformer decoder (CFPFormer), a novel decoder block that integrates feature pyramids and transformers. Even though transformer-like architecture impress with outstanding performance in segmentation, the concerns to reduce the redundancy and training costs still exist. Specifically, by leveraging patch embedding, cross-layer feature concatenation mechanisms, CFPFormer enhances feature extraction capabilities while complexity issue is mitigated by our Gaussian Attention. Benefiting from Transformer structure and U-shaped connections, our work is capable of capturing long-range dependencies and effectively up-sample feature maps. Experimental results are provided to evaluate CFPFormer on medical image segmentation datasets, demonstrating the efficacy and effectiveness. With a ResNet50 backbone, our method achieves 92.02% Dice Score, highlighting the efficacy of our methods. Notably, our VGG-based model outperformed baselines with more complex ViT and Swin Transformer backbone.",
-        "pubDate": "2024-04",
-        "authors": "Hongyi Cai, Mohammad Mahdinur Rahman, Wenzhen Dong, Jingyu Wu",
-        "heroImage": "/cfpformer.png",
-        "conference": "IJCNN 2025",
-        "href": "https://arxiv.org/abs/2404.15451"
-      }
-  ]
+  {
+    "title": "Low-Confidence Gold: Refining Low-Confidence Samples for Efficient Instruction Tuning",
+    "abstract": "The effectiveness of instruction fine-tuning for Large Language Models is fundamentally constrained by the quality and efficiency of training datasets. This work introduces LowConfidence Gold (LCG), a novel filtering framework that employs centroid-based clustering and confidence-guided selection for identifying valuable instruction pairs. Through a semi-supervised approach using a lightweight classifier trained on representative samples, LCG curates high-quality subsets while preserving data diversity. Experimental evaluation demonstrates that models fine-tuned on LCG-filtered subsets of 6K samples achieve superior performance compared to existing methods, with substantial improvements on MT-bench and consistent gains across comprehensive evaluation metrics. The framework's efficacy while maintaining model performance establishes a promising direction for efficient instruction tuning.",
+    "pubDate": "2025-02",
+    "authors": "Hongyi Cai, Jie Li, Mohammad Mahdinur Rahman, Wenzhen Dong",
+    "heroImage": "/lcg.png",
+    "conference": "EMNLP 2025 Findings",
+    "href": "https://arxiv.org/abs/2502.18978"
+  },
+  {
+    "title": "AutoDebias: Automated Framework for Debiasing Text-to-Image Models",
+    "authors": "Hongyi Cai, Mohammad Mahdinur Rahman, Mingkang Dong, Jie Li, Muxin Pu, Zhili Fang, Yinan Peng, Hanjun Luo, Yang Liu",
+    "abstract": "Text-to-Image (T2I) models generate high-quality images from text prompts but often exhibit unintended social biases, such as gender or racial stereotypes, even when these attributes are not mentioned. Existing debiasing methods work well for simple or well-known cases but struggle with subtle or overlapping biases. We propose AutoDebias, a framework that automatically identifies and mitigates harmful biases in T2I models without prior knowledge of specific bias types. Specifically, AutoDebias leverages vision-language models to detect biased visual patterns and constructs fairness guides by generating inclusive alternative prompts that reflect balanced representations. These guides drive a CLIP-guided training process that promotes fairer outputs while preserving the original model's image quality and diversity. Unlike existing methods, AutoDebias effectively addresses both subtle stereotypes and multiple interacting biases. We evaluate the framework on a benchmark covering over 25 bias scenarios, including challenging cases where multiple biases occur simultaneously. AutoDebias detects harmful patterns with 91.6% accuracy and reduces biased outputs from 90% to negligible levels, while preserving the visual fidelity of the original model.",
+    "pubDate": "2025-08",
+    "heroImage": "/autodebias.png",
+    "conference": "arXiv Preprint",
+    "href": "https://arxiv.org/abs/2508.00445"
+  },
+  {
+    "title": "MergeIT: From Selection to Merging for Efficient Instruction Tuning",
+    "abstract": "Instruction tuning is crucial for optimizing Large Language Models (LLMs), yet mainstream data selection methods heavily rely on LLMs as instruction quality scorers, leading to high computational costs and reduced data diversity. To address these limitations, we propose MergeIT, a novel LLM-based Merging strategy for better Instruction Tuning that shifts the focus from selection to synthesis. MergeIT operates in two stages: first, topic-aware filtering clusters and refines the dataset, preserving diversity while eliminating redundancy without relying on LLM-based scoring. Second, LLM-based merging synthesizes semantically similar instructions into more informative and compact training data, enhancing data richness while further reducing dataset size. Experimental results demonstrate that MergeIT enables efficient, diverse, and scalable instruction selection and synthesis, establishing LLM-based merging as a promising alternative to conventional scoring-based selection methods for instruction tuning.",
+    "pubDate": "2025-02",
+    "authors": "Hongyi Cai, Yuqian Fu, Hongming Fu, Bo Zhao",
+    "heroImage": "/mergeit.png",
+    "conference": "arXiv Preprint",
+    "href": "https://arxiv.org/abs/2503.00034"
+  },
+  {
+    "title": "AgileIR: Memory-Efficient Group Shifted Windows Attention for Lightweight Image Restoration",
+    "abstract": "Image Transformers show a magnificent success in Image Restoration tasks. Nevertheless, most of transformer-based models are strictly bounded by exorbitant memory occupancy. Our goal is to reduce the memory consumption of Swin Transformer and at the same time speed up the model during training process. Thus, we introduce AgileIR, group shifted attention mechanism along with window attention, which sparsely simplifies the model in architecture. We propose Group Shifted Window Attention (GSWA) to decompose Shift Window Multi-head Self Attention (SW-MSA) and Window Multi-head Self Attention (W-MSA) into groups across their attention heads, contributing to shrinking memory usage in back propagation. In addition to that, we keep shifted window masking and its shifted learnable biases during training, in order to induce the model interacting across windows within the channel. We also re-allocate projection parameters to accelerate attention matrix calculation, which we found a negligible decrease in performance. As a result of experiment, compared with our baseline SwinIR and other efficient quantization models, AgileIR keeps the performance still at 32.20 dB on Set5 evaluation dataset, exceeding other methods with tailor-made efficient methods and saves over 50% memory while a large batch size is employed.",
+    "pubDate": "2024-09",
+    "authors": "Hongyi Cai, Mohammad Mahdinur Rahman, Jingyu Wu, Wenzhen Dong, Jie Li",
+    "heroImage": "/agileir.png",
+    "conference": "ICANN 2025",
+    "href": "https://arxiv.org/abs/2409.06206"
+  },
+  {
+    "title": "CFPFormer: Feature-pyramid like Transformer Decoder for Segmentation and Detection",
+    "abstract": "Feature pyramids have been widely adopted in convolutional neural networks and transformers for tasks in medical image segmentation. However, existing models generally focus on the Encoder-side Transformer for feature extraction. We further explore the potential in improving the feature decoder with a well-designed architecture. We propose Cross Feature Pyramid Transformer decoder (CFPFormer), a novel decoder block that integrates feature pyramids and transformers. Even though transformer-like architecture impress with outstanding performance in segmentation, the concerns to reduce the redundancy and training costs still exist. Specifically, by leveraging patch embedding, cross-layer feature concatenation mechanisms, CFPFormer enhances feature extraction capabilities while complexity issue is mitigated by our Gaussian Attention. Benefiting from Transformer structure and U-shaped connections, our work is capable of capturing long-range dependencies and effectively up-sample feature maps. Experimental results are provided to evaluate CFPFormer on medical image segmentation datasets, demonstrating the efficacy and effectiveness. With a ResNet50 backbone, our method achieves 92.02% Dice Score, highlighting the efficacy of our methods. Notably, our VGG-based model outperformed baselines with more complex ViT and Swin Transformer backbone.",
+    "pubDate": "2024-04",
+    "authors": "Hongyi Cai, Mohammad Mahdinur Rahman, Wenzhen Dong, Jingyu Wu",
+    "heroImage": "/cfpformer.png",
+    "conference": "IJCNN 2025",
+    "href": "https://arxiv.org/abs/2404.15451"
+  }
+]
