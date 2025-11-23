@@ -252,10 +252,57 @@ resetFigureCounter(Astro.url.pathname);
 	
 			addCopyButtons();
 			
-			// 监听页面过渡事件（为了支持 View Transitions）
+			// Listen for page transition events (to support View Transitions)
 			document.addEventListener('astro:page-load', () => {
 				addCopyButtons();
 			});
+
+			// Scroll position preservation with debouncing
+			(function() {
+				const SCROLL_KEY = 'blog_scroll_' + window.location.pathname;
+				let scrollTimeout;
+				let isRestoring = false;
+
+				// Save scroll position with debouncing
+				function saveScrollPosition() {
+					if (isRestoring) return;
+					
+					clearTimeout(scrollTimeout);
+					scrollTimeout = setTimeout(() => {
+						sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
+					}, 50);
+				}
+
+				// Restore scroll position
+				function restoreScrollPosition() {
+					const pos = sessionStorage.getItem(SCROLL_KEY);
+					if (pos) {
+						isRestoring = true;
+						window.scrollTo({
+							top: parseInt(pos),
+							behavior: 'instant'
+						});
+						setTimeout(() => {
+							isRestoring = false;
+						}, 100);
+					}
+				}
+
+				// Listen to scroll events
+				window.addEventListener('scroll', saveScrollPosition, { passive: true });
+
+				// Restore on page load
+				if (document.readyState === 'complete') {
+					restoreScrollPosition();
+				} else {
+					window.addEventListener('load', restoreScrollPosition);
+				}
+
+				// Also restore on Astro page transitions
+				document.addEventListener('astro:page-load', () => {
+					setTimeout(restoreScrollPosition, 50);
+				});
+			})();
 		</script>
 	</body>
 </html>
