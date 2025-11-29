@@ -260,8 +260,25 @@ resetFigureCounter(Astro.url.pathname);
 			// Scroll position preservation with debouncing
 			(function() {
 				const SCROLL_KEY = 'blog_scroll_' + window.location.pathname;
-				let scrollTimeout;
+				let scrollTimeout: ReturnType<typeof setTimeout> | undefined;
 				let isRestoring = false;
+
+				// Create toast notification
+				function showScrollToast() {
+					const toast = document.createElement('div');
+					toast.className = 'scroll-toast';
+					toast.textContent = 'Resumed where you left off';
+					document.body.appendChild(toast);
+					
+					// Trigger animation
+					setTimeout(() => toast.classList.add('show'), 10);
+					
+					// Remove after 2.5 seconds
+					setTimeout(() => {
+						toast.classList.remove('show');
+						setTimeout(() => toast.remove(), 300);
+					}, 2500);
+				}
 
 				// Save scroll position with debouncing
 				function saveScrollPosition() {
@@ -276,7 +293,7 @@ resetFigureCounter(Astro.url.pathname);
 				// Restore scroll position
 				function restoreScrollPosition() {
 					const pos = sessionStorage.getItem(SCROLL_KEY);
-					if (pos) {
+					if (pos && parseInt(pos) > 100) { // Only show toast if scrolled significantly
 						isRestoring = true;
 						window.scrollTo({
 							top: parseInt(pos),
@@ -284,6 +301,7 @@ resetFigureCounter(Astro.url.pathname);
 						});
 						setTimeout(() => {
 							isRestoring = false;
+							showScrollToast();
 						}, 100);
 					}
 				}
@@ -304,5 +322,36 @@ resetFigureCounter(Astro.url.pathname);
 				});
 			})();
 		</script>
+
+		<style is:global>
+			.scroll-toast {
+				position: fixed;
+				top: 80px;
+				right: 20px;
+				background: rgba(0, 0, 0, 0.75);
+				backdrop-filter: blur(10px);
+				color: white;
+				padding: 8px 16px;
+				border-radius: 6px;
+				font-size: 13px;
+				z-index: 9999;
+				opacity: 0;
+				transform: translateX(20px);
+				transition: all 0.3s ease;
+			}
+
+			.scroll-toast.show {
+				opacity: 1;
+				transform: translateX(0);
+			}
+
+			@media (max-width: 768px) {
+				.scroll-toast {
+					top: 60px;
+					right: 10px;
+					font-size: 12px;
+				}
+			}
+		</style>
 	</body>
 </html>

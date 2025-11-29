@@ -1,0 +1,69 @@
+---
+interface Props {
+    time: string;
+    organization: string;
+    title: string;
+}
+
+const { time, organization, title } = Astro.props;
+---
+
+<div class="work-experience-item">
+    <div class="work-time">{time}</div>
+    <div class="work-details">
+        <span class="work-title">{title}</span>
+        <span class="work-organization">{organization}</span>
+    </div>
+</div>
+
+<style>
+    .work-experience-item {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        padding: 1.2rem 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .work-experience-item:last-child {
+        border-bottom: none;
+    }
+
+    .work-time {
+        flex: 0 0 160px;
+        color: #6b7280;
+        font-size: 0.95rem;
+        font-weight: 500;
+        padding-top: 0.2rem;
+    }
+
+    .work-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .work-title {
+        font-weight: 700;
+        color: #111827;
+        font-size: 1.1rem;
+    }
+
+    .work-organization {
+        color: #4b5563;
+        font-size: 1rem;
+    }
+
+    @media (max-width: 640px) {
+        .work-experience-item {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .work-time {
+            flex: none;
+            font-size: 0.9rem;
+        }
+    }
+</style>

@@ -7,6 +7,10 @@ import { Image } from "astro:assets";
 import headShot from "../assets/sagiri.jpg";
 import PublicationCard from "../components/Publication.astro";
 import publications from "../data/publications.json";
+import Experience from "../components/Experience.astro";
+import WorkExperience from "../components/WorkExperience.astro";
+import experienceData from "../data/experience.json";
+import resume from "../assets/resume.pdf";
 import { Icon } from "astro-icon/components";
 const sortedPubs = publications.sort((a, b) => {
 	return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
@@ -148,6 +152,12 @@ const sortedPubs = publications.sort((a, b) => {
 							>
 								<Icon name="mdi:linkedin" size={32} />
 							</a>
+							<a href={resume} target="_blank">
+								<Icon
+									name="mdi:file-document-outline"
+									size={32}
+								/>
+							</a>
 						</div>
 					</div>
 
@@ -188,7 +198,8 @@ const sortedPubs = publications.sort((a, b) => {
 							Science during my spare time and English during my
 							summer holiday of 12th grade. I am going to finish
 							my undergraduate degree of Computer Science at
-							Universiti Malaya in 2027 Feb.
+							Universiti Malaya in 2027 Feb. You can view my full
+							<a href={resume} target="_blank">resume here</a>.
 						</p>
 						<a href="https://github.com/xcloudfance/hongyicai-blog"
 							>Blog Template</a
@@ -210,6 +221,38 @@ const sortedPubs = publications.sort((a, b) => {
 										conference={pub.conference}
 										href={pub.href}
 										authors={pub.authors}
+									/>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+
+				<div id="container-experience">
+					<h4>Education</h4>
+					<ul>
+						{
+							experienceData.education.map((item) => (
+								<li>
+									<Experience
+										time={item.time}
+										organization={item.organization}
+										title={item.title}
+									/>
+								</li>
+							))
+						}
+					</ul>
+
+					<h4>Work Experience</h4>
+					<ul>
+						{
+							experienceData.work.map((item) => (
+								<li>
+									<WorkExperience
+										time={item.time}
+										organization={item.organization}
+										title={item.title}
 									/>
 								</li>
 							))

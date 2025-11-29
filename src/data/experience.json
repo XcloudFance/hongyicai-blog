@@ -1,0 +1,36 @@
+{
+    "education": [
+        {
+            "time": "Sept 2022 – July 2026",
+            "organization": "University of Malaya",
+            "title": "Bachelor of Software Engineering"
+        }
+    ],
+    "work": [
+        {
+            "time": "Feb 2025 – Present",
+            "organization": "Infinity Data Tech Sdn. Bhd.",
+            "title": "Technical Team Lead"
+        },
+        {
+            "time": "Sept 2024 – Sept 2025",
+            "organization": "Shanghai JiaoTong University",
+            "title": "Research Assistant"
+        },
+        {
+            "time": "Apr 2024 – Sept 2024",
+            "organization": "TsingHua University",
+            "title": "Research Assistant"
+        },
+        {
+            "time": "Nov 2023 – Feb 2024",
+            "organization": "10 EPOCHS",
+            "title": "Machine Learning Engineer"
+        },
+        {
+            "time": "Mar 2023 – Sept 2023",
+            "organization": "Overwatchs Technology",
+            "title": "Full-Stack Data Scientist"
+        }
+    ]
+}
