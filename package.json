@@ -21,6 +21,8 @@
     "lighthouse": "^13.0.0",
     "lucide-react": "^0.544.0",
     "preact": "^10.27.2",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "sharp": "^0.34.3",
     "wrangler": "^4.40.3"
   }

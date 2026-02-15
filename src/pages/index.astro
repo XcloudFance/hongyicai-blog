@@ -27,14 +27,14 @@ const sortedPubs = publications.sort((a, b) => {
 		/>
 
 		<style>
-			#head-shot,
 			#container-headshot {
 				width: 700px;
 				height: 200px;
 			}
 
 			#head-shot {
-				max-width: 200px;
+				width: 200px;
+				height: 200px;
 				border-radius: 50%;
 				object-fit: cover;
 				box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -85,10 +85,15 @@ const sortedPubs = publications.sort((a, b) => {
 				padding: 3em 1em;
 			}
 
-			/* 手机尺寸下隐藏头像容器 */
+			/* 手机尺寸下调整布局 */
 			@media (max-width: 720px) {
 				#container-headshot {
-					display: none;
+					width: 100%;
+					height: auto;
+				}
+
+				#head-shot {
+					max-width: 150px;
 				}
 
 				#container-intro {
