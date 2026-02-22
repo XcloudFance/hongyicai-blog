@@ -12,15 +12,93 @@ import knnImg from '../../assets/blogs/ANN/knn.png';
 import skiplistImg from '../../assets/blogs/ANN/skiplist.png';
 
 ## Experience
-A lot of things happened in 2025, I will try to list them down in this section with timeline.
+CNY is around the corner.
+As a lot of things happened in 2025, I will try to list them down in this section with timeline.
+
+
+> January: Data-centric AI - Less is more.  
+
+This is a rather interesting topic I would say. My understanding in DCAI is: if the data is not enough, then make it more; If the data is noisy, then make it less.
+
+I finalized my two works even though only one of them were accepted in EMNLP 2025, and the other one is still under review of ACL 26. I was screwed by ACL template and restriction twice. So this year I literally got a paper desk-rejected twice for no reason. My luck is kind of making my research career tough.
+
+
 
 > February: Joined Infinity DataTech sdn.bhd as Technical Team Lead.
 
 
 This is one of the biggest kickoff in the year. When the first time I came in the company, there wasn't any full-time developer even. What we have is just a bunch of interns, a bangladeshi (my friend) and some leftover codes.
 And also I didnt know it brings me a lot of extra challenges and new insights while solving problems to ship a product. I basically include them below:
-- Product Manager actually matters. So I decided to set one from existing frontend engineer intern. And it worked out seemly fine. So this year I basically learned a lot about product management.
-- Kotlin Cross Multiplatform. It actually slays especially in the case that we need to integrate different VPN core library into different platforms. We managed to make it compatible with all platforms including Linux, Windows, MacOS, Android and IOS. Amazing.
-- Node System. I designed this part in java, the last language I ever wanted to try in my life. We designed node systems with multiple abstractions to make servers scalable among different configuration. Now servers are able to serve as forwarders, VPN terminals and even you can arrange them backwards so the data come in from the outer servers into anywhere you want.
+- **Product Manager actually matters.** So I decided to set one from existing frontend engineer intern. And it worked out seemly fine. So this year I basically learned a lot about product management.
+- **Kotlin Cross Multiplatform.** It actually slays especially in the case that we need to integrate different VPN core library into different platforms. We managed to make it compatible with all platforms including Linux, Windows, MacOS, Android and IOS. Amazing.
+- **Java**. I designed the node mesh systems in Java, the last language I ever wanted to try in my life. We designed node systems with multiple abstractions to make servers scalable among different configuration. Now servers are able to serve as forwarders, VPN terminals and even you can arrange them backwards so the data come in from the outer servers into anywhere you want.
+- **Kubernetes Bare Metal.** Unexpectedly deploying Kubernetes for actual production without cloud services introduces more technical difficulties. As our Boss thinks of and actually it is, the cloud service would raise at least 3 times more on the expense with the same server specs.
+Our team has researched into with Cilium, Layer 2 Load Balancer, Ingress and its controllers (we also required blacklists on the gateway.)
+
+- **ETL streams** This is a part I did not see it coming. Initially this product was designed in a brtual way and nobody would think of further development on that. But life also bores me when the progress gradually sets. We experimented and finalized the pipeline of our own data ingestion: Apache Airflow + Spark + Kafka + Clickhouse. Since we are looking forward to building up user profiles and A/B testing, it is more than necessary to have our own setup. Of course, we also integrate UIs for this part of system.
+
+> April: A fool got his first academic paper published in fool's day.
+
+Exactly, in 1st April, I got my first acceptance of paper, IJCNN 2025, which I did in the 2nd year of bachelor myself and my friend Mahdinur (he would continously stick around the entire my year lol.)
+
+I have been rejected so many times in 2024, and finally got a place to settle my paper. Honestly at this moment I start feeling hopes from research. With no one is teaching and guiding, so many problems that I have overcomed, it finally pays me off!
+
+
+
+> May: AutoDebias - NeurIPS submission failed in half way. ICANN Acceptance
+
+Even though we managed to somewhat hack into UM DICC, the supercomputer computation center in Universiti Malaya, we took a lot of time on check and try for our method. 
+This is a paper that we used for removing the nuanced biases from injected Text-to-Image diffusion models. It spotlights more on `unlearning` or `removing` concepts from a model.
+
+But, things did not go well as we wished. DICC was down for almost 2 weeks before the deadline of NeurIPS 2025, so we failed to make it through.
+
+By the way I also got my second paper accepted. It was just an one-month trial to help me understand all research procedures. I start feeling like I am making money to my hobby - Publishing papers.
+
+Now it is time to say quality should be over quantity. It is the time to see through the hard parts.
+
+> July & August: Joined as a research assistant in Shanghai Jiaotong University - MINT Lab. Also our product had the first official release. Also EMNLP 2025 Accepted.
+
+Looking backwards, for our first product, we made it 26 version on just 1.0 and managed to push it every week on time. <s>Who says we did not take the advantage from AI development Lmao. </s>
+
+A lesson learned: Some procedure looks verbose, but they always got their own reasons. After leading teams to streamline our products, I realized many bugs were found and never noticed during testing. Without a second thought from our developers, or they just could not aware of that because of lacked experiences, the team is nowadays settled with checking and testing in a very high granularity to each modules in our app. 
+
+Also, APIs could fall on bugs, returning null values or potentially incompatible backwards. Apps might have issues when migrating to the new database schemas since adding more features in newer versions. Effective cooperation, efficient communication and thorough consideration are becoming our standards. We stuided how to carry forward version, rollback version and start pushing out more new features.
+
+This month, autodebias also got rejected from AAAI 26, as I think it would be a great opportunity to tranform my entire writing. It looked a little bit controversial. And also I learned it is always not so bad to make a reduction instead of inclduing everything in my mind. 
+
+
+Last but not least, my Low-Confidence Gold (LCG) was accepted in EMNLP finally. This is a method that I designed for building up efficient instruction tuning datasets.
+It requires only 6k to achieve higher performance than the original fullset. If you are interested, you can go to my homepage and find it in my publication / preprint session.
+
+> September: This blog was deployed. 
+
+This is a small milestone I just brought in haha.
+
+
+> November: 1.1 Release, with more well-designed UI/UX, cache optimization and memory optimization
+
+Kotlin singleton model would always stay in the memory to maintain the status. This is not friendly towards users with less memory (Plus it is also not a common practice to have that much unreleased memory). 
+
+Recruitment throughout the year was also challenging. We made so much efforts on hiring backend interns, frontend interns, mobile interns, and also their respective full-time jobs. All I can say to Malaysian talent market is, you guys'd really use the immigration protection otherwise one day it would make you very weak on competing with foreigners. I am not intended to say that intellecual issues or being racism on this country. I am just again frsutrated by lots of candidates could not even answer basic questions. Why wouldn't at least show some respects by preparing the interview?
+
+
+
+> 2026 January: got stuck in Thailand & CVPR 26 Review Score
+
+Dramatically in 2025 Feb I was travelling in Bangkok. Then I stepped on this land again by driving with my friends. Then accidents happened. Our car was flashing oil pressure light and we did not have the gut to drive it back (even though we still did eventually.)
+
+CVPR 26 released its score. It was quite good. This post is published after CVPR final results. So I would just point out it was Autodebias, the work that I have been digging on throughout the year, finally got a place to settle. And it will be my first CCF-A Paper, at least that is what I believed when I am writing this paragraph :)
+
+Let's see how life goes and wraps up.
+
+
+## Side Hustle: Setting up US overseas shopping internet in Malaysia
+
+I thought it would be a easy money. Turned it out it struggled me a while.
+
+The requirement was quite straightforward but Apple is fucking us up by its security. They randomly switch MAC Address even if I set it to be static or whatever the mode is. The reason I care about it is we split different US public IPs by identifying their mac address to proxy. Therefore, ideally all devices are taking exclusively different United States residential IPs. But apple just would not sit for one MAC address.
+
+Solution was brutal. I manually wrote a program to save dnsmasq ip address to mac address hardcodes in storage by checking if devices have modified their MAC or not. If it was a temporal modification, then do not apply the hardcode yet. Once they settled this device for a long term, then we let the program set IP binded with this MAC.
+
 
 
